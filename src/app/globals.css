@@ -1,0 +1,343 @@
+@import "tailwindcss";
+
+/*
+ * Breakpoints espelham os do Elementor original (desktop-first):
+ *   max-mobile   → ≤ 767px   (mobile)
+ *   max-mobilex  → ≤ 880px   (mobile landscape)
+ *   max-tablet   → ≤ 1024px  (tablet)
+ *   max-tabletx  → ≤ 1200px  (tablet landscape)
+ *   max-laptop   → ≤ 1366px  (laptop)
+ *   wide         → ≥ 2400px  (widescreen)
+ * Os prefixos sem "max-" (ex.: mobile:) equivalem a min-width do mesmo valor.
+ */
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-mobile: 768px;
+  --breakpoint-mobilex: 881px;
+  --breakpoint-tablet: 1025px;
+  --breakpoint-tabletx: 1201px;
+  --breakpoint-laptop: 1367px;
+  --breakpoint-wide: 2400px;
+
+  --color-brand: #f5591c;
+  --color-accent: #f34e0b;
+  --color-orange: #e85018;
+  --color-ink: #1a1a1a;
+  --color-panel: #111111;
+  --color-ui: rgba(237, 237, 237, 0.9);
+}
+
+@theme inline {
+  --font-poppins: var(--font-poppins-src), sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* Mesma fonte base do tema original; o Poppins é aplicado em cada texto. */
+  body {
+    margin: 0;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Corta o que vaza para os lados (como o original). No body usamos "clip"
+     em vez de "hidden" para não quebrar o position: sticky da seção do formulário. */
+  html {
+    overflow-x: hidden !important;
+  }
+
+  body {
+    overflow-x: clip !important;
+  }
+
+  p {
+    margin-block-start: 0;
+    margin-block-end: 0.9rem;
+  }
+
+  a {
+    background-color: transparent;
+    text-decoration: none;
+    color: #c36;
+  }
+
+  a:not([href]):not([tabindex]) {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  b,
+  strong {
+    font-weight: bolder;
+  }
+
+  img {
+    display: inline-block;
+    border-style: none;
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
+  }
+
+  /* O preflight do Tailwind deixa SVGs como block; o original usa o padrão do navegador */
+  svg {
+    display: inline;
+    vertical-align: baseline;
+  }
+
+  label {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+  }
+
+  button,
+  input,
+  select {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+@layer components {
+  /* Botão laranja principal ("QUERO ..."), com o brilho que atravessa no hover */
+  .cta-button {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 47px;
+    background-color: var(--color-accent);
+    padding: 20px 0;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02rem;
+    text-align: center;
+    color: #fff;
+    fill: #fff;
+    transition: all 0.2s ease-in;
+  }
+
+  .cta-button:hover,
+  .cta-button:focus,
+  .cta-button:visited {
+    color: #fff;
+  }
+
+  /* No original o botão encolhe (0.9) quando fica com foco/clicado… */
+  .cta-button:focus,
+  .cta-button:active {
+    transform: scale(0.9);
+  }
+
+  /* …e cresce levemente (1.02) no hover, que tem prioridade */
+  .cta-button:hover {
+    border: none;
+    transform: scale(1.02);
+    transition: all 0.2s ease-out;
+  }
+
+  .cta-button::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 7%;
+    left: 0%;
+    width: 0;
+    height: 86%;
+    opacity: 0;
+    background: #fff;
+    box-shadow: 0 0 50px 30px #fff;
+    transform: skewX(-20deg);
+  }
+
+  .cta-button:hover::before {
+    animation: cta-shine 0.5s 0s linear;
+  }
+
+  @media (width < 768px) {
+    .cta-button {
+      font-size: 16px;
+    }
+  }
+
+  /* Card com borda em degradê (seção "Conheça nossa Metodologia") */
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    padding: 2px;
+    border-radius: 15px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #f5591c 100%);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* Animações de hover equivalentes às do Elementor */
+  .hover-float {
+    transition-duration: 0.3s;
+    transition-property: transform;
+    transition-timing-function: ease-out;
+  }
+
+  .hover-float:hover,
+  .hover-float:focus,
+  .hover-float:active {
+    transform: translateY(-8px);
+  }
+
+  .hover-grow {
+    transition-duration: 0.3s;
+    transition-property: transform;
+  }
+
+  .hover-grow:hover,
+  .hover-grow:focus,
+  .hover-grow:active {
+    transform: scale(1.1);
+  }
+
+  /* Selo do foguete no hero, com pulso */
+  .pulse-badge {
+    border-radius: 60px;
+    box-shadow: 0 0 21px -6px #f34e0b;
+    animation: pulse-badge 2s infinite;
+  }
+
+  /* Menu fixo: some ao rolar para baixo, volta ao rolar para cima */
+  .site-menu {
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .site-menu.is-visible {
+    transform: translateY(0);
+  }
+
+  /* Mensagens do formulário (mesmas classes visuais do Elementor) */
+  .form-message {
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+    color: #fff;
+  }
+
+  .form-message-success {
+    color: #888 !important;
+  }
+
+  .form-message-success::before {
+    content: "";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-inline-end: 5px;
+    vertical-align: middle;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxMSIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDE0IDExIj48cGF0aCBmaWxsPSIjMDA4QTIwIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00Ljc1IDguMTUgMS42IDUgLjU1IDYuMDVsNC4yIDQuMiA5LTlMMTIuNy4yeiIgY2xpcC1ydWxlPSJldmVub2RkIi8+PC9zdmc+");
+    background-position: 50%;
+    background-repeat: no-repeat;
+  }
+
+  .form-message-danger::before {
+    content: "";
+    display: inline-block;
+    margin-inline-end: 5px;
+    vertical-align: middle;
+  }
+
+  .spin {
+    animation: spin-fa 2s infinite linear;
+  }
+
+  /* Popup do menu mobile e lightbox: entrada/saída pela direita e zoom */
+  .slide-in-right {
+    animation: slide-in-right 0.5s both;
+  }
+
+  .slide-out-right {
+    animation: slide-in-right 0.5s both reverse;
+  }
+
+  .zoom-in {
+    animation: zoom-in 0.3s;
+  }
+}
+
+@keyframes cta-shine {
+  from {
+    opacity: 0;
+    left: 0%;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    left: 100%;
+  }
+}
+
+@keyframes pulse-badge {
+  70% {
+    box-shadow: 0 0 0 25px rgb(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(0, 0, 0, 0);
+  }
+}
+
+@keyframes spin-fa {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+}

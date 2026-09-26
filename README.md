@@ -53,6 +53,14 @@ Os breakpoints do Tailwind replicam os do Elementor (desktop-first):
 - **Rastreamento**: Google tag (`GT-552FQVS`), GTM (`GTM-WBJTM4T2`) e Pixel da Meta (`624880005754303`) inseridos diretamente, sem os plugins Site Kit, PixelYourSite e Meta for WordPress.
 - **Plugins substituídos por código**: rolagem suave do mouse (Mousewheel Smooth Scroll → `smoothscroll-for-websites`), carrosséis (Swiper), animação Lottie (`lottie-web`), menu mobile e lightbox de vídeos.
 
-## Deploy
+## Deploy (Cloudflare Workers)
 
-Previsto para Cloudflare Workers (via OpenNext). Lembre de cadastrar `LEAD_WEBHOOK_URL` nas variáveis do Worker.
+O site roda no Cloudflare Workers com o adaptador [OpenNext](https://opennext.js.org/cloudflare) (`wrangler.jsonc` e `open-next.config.ts`). O Worker se chama `lp-genos-principal`.
+
+- **Automático:** cada push na `main` publica pelo GitHub Actions (`.github/workflows/deploy.yml`). O repositório precisa dos segredos `CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID` em *Settings > Secrets and variables > Actions*.
+- **Manual:** `npx wrangler login` e depois `npm run deploy`.
+- **Webhook:** `LEAD_WEBHOOK_URL` é um secret do Worker, configurado uma vez com `npx wrangler secret put LEAD_WEBHOOK_URL` (ou no painel, em *Workers > lp-genos-principal > Settings > Variables and Secrets*). O deploy não mexe nele.
+
+### Domínio
+
+A LP responde pelo domínio inteiro `genosgroup.com.br` (o WordPress foi desativado). O domínio é ligado ao Worker no painel da Cloudflare, em *Workers > lp-genos-principal > Settings > Domains & Routes*, e não no `wrangler.jsonc`: assim um deploy nunca mexe no domínio sem querer.

@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Worker gerado pelo OpenNext a partir do build do Next.js
+  "name": "lp-genos-principal",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Referência ao próprio Worker, exigida pelo OpenNext (o nome precisa ser igual ao "name")
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "lp-genos-principal"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+
+  // LEAD_WEBHOOK_URL é um secret do Worker (não fica no repositório público).
+  // O workflow de deploy envia o valor a partir do secret de mesmo nome no GitHub.
+  //
+  // O domínio (genosgroup.com.br) NÃO é declarado aqui de propósito: rotas e
+  // domínios ficam no painel da Cloudflare, em Settings > Domains & Routes,
+  // assim o deploy nunca mexe no domínio sem querer.
+}

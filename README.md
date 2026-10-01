@@ -50,7 +50,11 @@ Os breakpoints do Tailwind replicam os do Elementor (desktop-first):
 ## O que foi adaptado do WordPress
 
 - **Formulário**: em vez do `admin-ajax.php` do Elementor, envia para `/api/lead`, que repassa ao webhook do n8n no mesmo formato (`application/x-www-form-urlencoded`, chaves = rótulos dos campos + metadados + `form_id`/`form_name`). Os campos mantêm os mesmos `id`/`name`, que o GTM usa nas conversões.
-- **Rastreamento**: Google tag (`GT-552FQVS`), GTM (`GTM-WBJTM4T2`) e Pixel da Meta (`624880005754303`) inseridos diretamente, sem os plugins Site Kit, PixelYourSite e Meta for WordPress.
+- **Rastreamento**: Pixel da Meta (`624880005754303`) inserido diretamente, sem os plugins PixelYourSite e Meta for WordPress. A Google tag `GT-552FQVS` e o GTM `GTM-WBJTM4T2`, que vieram do Site Kit, foram removidos: apontavam para propriedades do GA4 fora das contas da Genos.
+- **GA4 oficial da Genos** (`G-X2G6KW4TNY`) e GTM próprio (`GTM-M8L8DL58`): em `src/components/Tracking.tsx`. É a propriedade da conta Genos Group (445075916), a única que a Genos administra — as duas que vieram do WordPress apontam para propriedades que não aparecem em conta nenhuma da empresa. Com ela aqui, o site principal e a calculadora em `genosgroup.com.br/avaliacao` passam a reportar para a mesma propriedade, e o funil inteiro fica visível num relatório só. Marca as páginas com o grupo de conteúdo `Site · Genos Group`, para separá-las das LPs sem depender de filtro por URL.
+- **Conversão do formulário**: em `src/lib/conversao.ts`, disparada pelo `LeadForm` só depois da resposta de sucesso da API. Manda `Lead` para a Meta e `generate_lead` para o GA4 — os nomes padrão das duas plataformas, que são os únicos otimizáveis como conversão. Antes isso vivia dentro do GTM antigo; ao remover o contêiner o evento teria sumido em silêncio.
+
+> **Não recrie GA4 nem Pixel dentro do `GTM-M8L8DL58`.** Os dois já estão na página. Duplicar qualquer um conta cada visita duas vezes na mesma propriedade, e o relatório passa a mentir para cima sem dar sinal de erro.
 - **Plugins substituídos por código**: rolagem suave do mouse (Mousewheel Smooth Scroll → `smoothscroll-for-websites`), carrosséis (Swiper), animação Lottie (`lottie-web`), menu mobile e lightbox de vídeos.
 
 ## Deploy (Cloudflare Workers)

@@ -1,24 +1,47 @@
 import Script from "next/script";
 
 /**
- * Mesmas tags do site original:
- * - Google tag GT-552FQVS (antes inserida pelo Site Kit)
- * - Google Tag Manager GTM-WBJTM4T2
- * - Pixel da Meta 624880005754303
+ * Tags do site.
+ *
+ * GA4 e Pixel ficam aqui, no codigo, de proposito. Os dois sao da Genos:
+ * a propriedade do GA4 esta na conta Genos Group (445075916) e o Pixel e
+ * o mesmo que roda na calculadora em /avaliacao, entao o funil inteiro
+ * reporta para o mesmo lugar.
+ *
+ * O que saiu, e por que:
+ *
+ * - GT-552FQVS (carregava G-VH9KE2YJM6) e GTM-WBJTM4T2 vieram do Site Kit
+ *   do WordPress na migracao. Apontavam para propriedades do GA4 que nao
+ *   aparecem em conta nenhuma da Genos: dados nossos indo para painel de
+ *   terceiro, com acesso que pode acabar sem aviso.
+ *
+ * - As conversoes do formulario moravam dentro do GTM-WBJTM4T2, nao no
+ *   codigo. Tirar o conteiner sem mais nada apagaria o evento de Lead em
+ *   silencio: nada quebra na tela, as campanhas so param de receber sinal.
+ *   Por isso o Lead agora e disparado pelo LeadForm, em codigo versionado.
+ *
+ * GTM_ID e o conteiner da propria Genos, que entra no lugar do antigo.
+ * Esta vazio hoje e serve para adicionar tag futura (Google Ads, LinkedIn,
+ * TikTok) sem precisar de deploy.
+ *
+ * ATENCAO ao usar o GTM: NAO recrie o GA4 nem o Pixel la dentro. Os dois
+ * ja estao nesta pagina. Duplicar qualquer um deles conta cada visita duas
+ * vezes na mesma propriedade, e o relatorio passa a mentir para cima sem
+ * dar nenhum sinal de erro.
  */
-const GOOGLE_TAG_ID = "GT-552FQVS";
-const GTM_ID = "GTM-WBJTM4T2";
+const GA_ID = "G-X2G6KW4TNY";
 const META_PIXEL_ID = "624880005754303";
+const GTM_ID = "GTM-M8L8DL58";
 
 export default function Tracking() {
   return (
     <>
-      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`} strategy="afterInteractive" />
+      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
       <Script id="google-tag" strategy="afterInteractive">
         {`window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
 gtag("set","linker",{"domains":["genosgroup.com.br"]});
 gtag("js", new Date());
-gtag("config", "${GOOGLE_TAG_ID}");`}
+gtag("config", "${GA_ID}", {content_group: "Site · Genos Group"});`}
       </Script>
       <Script id="google-tag-manager" strategy="afterInteractive">
         {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

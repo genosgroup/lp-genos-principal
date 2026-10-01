@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import { FORM_ID, FORM_MESSAGES, FORM_NAME, LEAD_FIELDS, type LeadResponse } from "@/lib/lead-form";
+import { registrarLead } from "@/lib/conversao";
 import { CaretDownIcon, SpinnerIcon } from "./icons";
 
 type Message = { type: "success" | "danger"; text: string };
@@ -49,6 +50,10 @@ export default function LeadForm() {
       const result = (await response.json()) as LeadResponse;
 
       if (result.success) {
+        // Depois da resposta de sucesso, nunca no submit: lead que falhou
+        // a validacao ou o webhook nao e lead, e contado como se fosse
+        // inflaria a conversao e estragaria a otimizacao da campanha.
+        registrarLead(FORM_NAME);
         form.reset();
         setMessage({ type: "success", text: result.data.message });
       } else {

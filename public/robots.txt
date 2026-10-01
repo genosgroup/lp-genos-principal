@@ -1,0 +1,8 @@
+# Tráfego pago é a origem principal, mas as LPs acabam virando link em
+# prospecção, bio e e-mail. Sem indexação elas demoram muito mais a aparecer,
+# e sem sitemap não entram nos relatórios de cobertura do Search Console —
+# o que faz perder o aviso de quando uma delas sai do índice.
+User-agent: *
+Allow: /
+
+Sitemap: https://genosgroup.com.br/sitemap.xml

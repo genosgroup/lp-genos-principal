@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  As quatro páginas do apex. Cada uma é servida por um Worker diferente, de um
+  repositório diferente, mas o sitemap é um só porque é do domínio: a rota casa
+  por prefixo, e só o Worker da raiz recebe a requisição de /sitemap.xml.
+  O subdomínio clinicas.genosgroup.com.br tem o seu, no repositório dele.
+
+  Página nova no apex entra aqui.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://genosgroup.com.br/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://genosgroup.com.br/avaliacao</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://genosgroup.com.br/ebook</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://genosgroup.com.br/receitaoculta</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

@@ -1,7 +1,12 @@
-# Tráfego pago é a origem principal, mas as LPs acabam virando link em
-# prospecção, bio e e-mail. Sem indexação elas demoram muito mais a aparecer,
-# e sem sitemap não entram nos relatórios de cobertura do Search Console —
-# o que faz perder o aviso de quando uma delas sai do índice.
+# Sem acento de proposito: robots.txt e servido como text/plain sem charset, e
+# o navegador assume latin-1. Acento aqui aparece embaralhado na tela, e nao ha
+# como declarar charset neste arquivo.
+#
+# Por que uma LP de trafego pago precisa disto: ela acaba virando link em
+# prospeccao, bio e e-mail, e sem indexacao demora muito mais a aparecer. E o
+# Search Console so reporta o que ele acha, entao sem sitemap a pagina nao
+# entra nos relatorios de cobertura e voce perde o aviso de quando ela sai do
+# indice.
 User-agent: *
 Allow: /
 

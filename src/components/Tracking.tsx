@@ -1,11 +1,19 @@
 import Script from "next/script";
 
 /**
- * Mesmas tags do site original:
- * - Google tag GT-552FQVS (antes inserida pelo Site Kit)
- * - Google Tag Manager GTM-WBJTM4T2
- * - Pixel da Meta 624880005754303
+ * Tags do site.
+ *
+ * GA_GENOS_ID e o Pixel sao da Genos: a propriedade do GA4 fica na conta
+ * Genos Group (445075916) e e a unica que a gente administra e configura.
+ * Sem ela aqui, o site principal e a calculadora em /avaliacao reportavam
+ * para propriedades diferentes e nenhum relatorio via o funil inteiro.
+ *
+ * GOOGLE_TAG_ID e GTM_ID vieram do Site Kit do WordPress e apontam para
+ * propriedades de terceiro, que nao aparecem em nenhuma conta da Genos.
+ * Ficam no ar por enquanto porque desligar corta o relatorio de quem ainda
+ * acompanha; sao candidatos a remocao, nao parte da medicao oficial.
  */
+const GA_GENOS_ID = "G-X2G6KW4TNY";
 const GOOGLE_TAG_ID = "GT-552FQVS";
 const GTM_ID = "GTM-WBJTM4T2";
 const META_PIXEL_ID = "624880005754303";
@@ -18,7 +26,8 @@ export default function Tracking() {
         {`window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
 gtag("set","linker",{"domains":["genosgroup.com.br"]});
 gtag("js", new Date());
-gtag("config", "${GOOGLE_TAG_ID}");`}
+gtag("config", "${GOOGLE_TAG_ID}");
+gtag("config", "${GA_GENOS_ID}", {content_group: "Site \u00b7 Genos Group"});`}
       </Script>
       <Script id="google-tag-manager" strategy="afterInteractive">
         {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

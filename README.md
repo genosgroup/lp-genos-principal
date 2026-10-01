@@ -51,6 +51,7 @@ Os breakpoints do Tailwind replicam os do Elementor (desktop-first):
 
 - **Formulário**: em vez do `admin-ajax.php` do Elementor, envia para `/api/lead`, que repassa ao webhook do n8n no mesmo formato (`application/x-www-form-urlencoded`, chaves = rótulos dos campos + metadados + `form_id`/`form_name`). Os campos mantêm os mesmos `id`/`name`, que o GTM usa nas conversões.
 - **Rastreamento**: Google tag (`GT-552FQVS`), GTM (`GTM-WBJTM4T2`) e Pixel da Meta (`624880005754303`) inseridos diretamente, sem os plugins Site Kit, PixelYourSite e Meta for WordPress.
+- **GA4 oficial da Genos** (`G-X2G6KW4TNY`): adicionado depois, em `src/components/Tracking.tsx`. É a propriedade da conta Genos Group (445075916), a única que a Genos administra — as duas que vieram do WordPress apontam para propriedades que não aparecem em conta nenhuma da empresa. Com ela aqui, o site principal e a calculadora em `genosgroup.com.br/avaliacao` passam a reportar para a mesma propriedade, e o funil inteiro fica visível num relatório só. Marca as páginas com o grupo de conteúdo `Site · Genos Group`, para separá-las das LPs sem depender de filtro por URL.
 - **Plugins substituídos por código**: rolagem suave do mouse (Mousewheel Smooth Scroll → `smoothscroll-for-websites`), carrosséis (Swiper), animação Lottie (`lottie-web`), menu mobile e lightbox de vídeos.
 
 ## Deploy (Cloudflare Workers)
